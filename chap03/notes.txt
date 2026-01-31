@@ -16,6 +16,8 @@ docker rm -f [container_id_or_name]: force removes running container
 docker run -d [image_name]: runs container in background (detached mode)
 docker run -it [image_name] /bin/bash: run a container and interact with its bash shell
 docker run -p host_port:container_port [image_name]: map container port to host port i.e. docker run -d -p 80:80 nginx
+docker run -d --memory=512m [image_name]: run container with memory limit
+docker run -d --cpus=0.5 [image_name]: run container with CPU limit
 
 docker logs [container_id_or_name]: view container logs
 docker logs -f [container_id_or_name]: follow container logs
