@@ -1,0 +1,31 @@
+Intro Concepts
+1. Containerization: lightweight virtualization form packaging apps and dependencies
+2. Docker Engine: runtime that lets you build and run containers
+3. Docker image: read-only template used to create containers
+4. Docker Container: runnable instance of a Docker image
+5. Docker Hub: cloud-based registry for storing/sharing Docker images
+
+Docker architecture
+1. Docker client: primary way users interact with Docker via the client
+2. Docker host: the machine running the Docker daemon (dockerd)
+3. Docker daemon: manages Docker objects like images, containers, networks, volumes
+4. Docker Registry: stores Docker images e.g. Docker Hub
+
+Docker components
+1. Dockerfile
+2. Docker Compose: tool for defining and running multi-container apps
+3. Docker Swarm: Docker's clustering and orchestration solutions
+4. Docker Network: facilitates communications betweem containers
+5. Docker Volume: provides persistent storage for container data
+
+Basic workflow
+1. Build: create Dockerfile that defines app and dependencies
+2. Ship: Push Docker image to registry like Docker Hub
+3. Run: pull image and run it as a container on any Docker-enabled host
+
+docker build -t myapp:v1
+docker push username/myapp:v1
+docker run -d 8080:80 username/myapp:v1
+
+Docker Installation
+wget -q0- https://get.docker.com | sh
