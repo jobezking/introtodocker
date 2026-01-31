@@ -1,0 +1,12 @@
+docker network ls: list networks
+docker network create my_network: create Docker network
+docker run -d --network my_network --name my_container [image_name]: start a container and connect it to a network
+
+docker volume create my_volume: create Docker volume
+docker run -d -v my_volume:/path/in/container [image_name]: start a container using Docker volume
+
+Define health checks in Dockerfile
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f http://localhost/ || exit 1
+
+docker container prune: remove all stopped containers
+docker system prune: remove all unused resources (containers, networks, images)
