@@ -27,5 +27,9 @@ docker build -t myapp:v1
 docker push username/myapp:v1
 docker run -d 8080:80 username/myapp:v1
 
-Docker Installation
+Docker Installation from https://github.com/docker/docker-install
 wget -q0- https://get.docker.com | sh
+sudo systemctl enable docker; sudo systemctl start docker
+sudo usermod -aG docker $USER
+docker version
+docker run hello-world
