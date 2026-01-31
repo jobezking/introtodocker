@@ -1,0 +1,8 @@
+docker pull httpd
+docker run -d --name my-apache -p 8080:80 httpd
+docker ps
+sensible-browser http://localhost:8080
+To modify default page:
+docker exec -it my-apache /bin/bash
+echo "<h1>Jesus Christ Is Lord!</h1>" > /usr/local/apache2/htdocs/index.html
+exit

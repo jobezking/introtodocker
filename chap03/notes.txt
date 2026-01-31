@@ -1,0 +1,23 @@
+docker run hello-world
+1. checks for hello-world image locally
+2. If not found, pulls image from Docker repository (if not specified, Docker Hub by default)
+3. Creates container from image
+4. Runs the container
+5. exits the container (if the application is not coded to run continuously like a web server)
+
+docker ps: sees running containers
+docker ps -a: sees all containers including stopped ones
+docker stop [container_id_or_name]: stops running container
+docker start [container_id_or_name]: starts stopped container
+docker restart [container_id_or_name]: restarts running container
+docker rm [container_id_or_name]: removes stopped container
+docker rm -f [container_id_or_name]: force removes running container
+
+docker run -d [image_name]: runs container in background (detached mode)
+docker run -it [image_name] /bin/bash: run a container and interact with its bash shell
+docker run -p host_port:container_port [image_name]: map container port to host port i.e. docker run -d -p 80:80 nginx
+
+docker logs [container_id_or_name]: view container logs
+docker logs -f [container_id_or_name]: follow container logs
+
+docker exec -it [container_id_or_name] [command]: executes command on running container i.e. docker exec it nginx /bin/bash
