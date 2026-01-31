@@ -33,3 +33,5 @@ sudo systemctl enable docker; sudo systemctl start docker
 sudo usermod -aG docker $USER
 docker version
 docker run hello-world
+
+https://codegenos.github.io/posts/private-docker-registry-raspberry-pi-portainer/
