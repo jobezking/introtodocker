@@ -1,0 +1,21 @@
+layers: images made of multiple layers, each representing set of changes to filesystem
+Base image: the foundation of an image, usually a minimal operating system
+Parent image: an image that your image is built upon (n-1 layer)
+Image tag: labels used to version and identify images
+Image ID; a unique identifier for each image
+
+docker images: to see all images on your local system
+docker image ls: more verbose
+
+docker pull <image_name>:<tag> : downloads image from Docker Hub while specifying tag
+docker pull ubuntu:20.04
+If no image specified, latest image will be pulled by default
+
+docker run <image_name>:<tag> : run image from container while specifying tag
+docker run -it ubuntu:20.04 /bin/bash
+
+docker inspect <image_name>:<tag> : get detailed info about image
+
+docker rmi <image_name>:<tag> : remove image
+docker image rm <image_name>:<tag> : remove image
+docker images prune: remove all unused images
