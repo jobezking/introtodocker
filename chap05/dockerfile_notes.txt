@@ -43,3 +43,22 @@ VOLUME /data
 
 ARG defines variable that can pass at build time to the builder with the docker build command, allowing for more flexible image builds.
 ARG VERSION=latest
+
+Best practices.
+1. Multi-stage builds to create smaller final builds by separating build-time from run-time dependencies
+2. Minimize number of layers by combining commands
+3. Leverage build cache by ordering instructions from least to most frequently changing
+4. Use .dockerignore
+5. Don't install unnecessary packages
+6. Use specific tags (avoid latest)
+7. Set WORKDIR to avoid instructions like cd /test && ls 
+8. Use COPY instead of ADD unless you need the extra functionality
+9. Use environment variables esp for version numbers and paths
+FROM node:14 AS build 
+WORKDIR /app
+COPY package*.json ./
+RUN nmp install
+COPY . .
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
