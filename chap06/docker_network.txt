@@ -5,3 +5,60 @@ Docker network drivers
 4. MacVLAN: Assigns MAC address to container, making it appear as physical device on network
 5. None: disables all networking for container
 6. Network plugins: allows use of third-party drivers
+
+docker network ls   - list all networks
+docker network inspect <network_name>   -   get detailed info about network
+
+docker network create --driver <driver> <network_name>  -  create new network
+docker network create --driver bridge my_custom_network
+docker network create --driver bridge --subnet 172.18.0.0/16 --gateway 172.18.0.1 my_custom_network
+
+docker run --network <network_name> <image>     - start container from image and connect it to network
+docker run --network my_custom_network --name container1 -d nginx
+docker network connect <network_name> <container_name>      -   connect running container to network
+docker network disconnect <network_name> <container_name>   -  disconnect container from network
+docker network rm <network_name>    -   remove a network
+
+Bridge networks: most commonly used and suitable for containers running on same Docker daemon host
+    1. Each container connected to bridge network is allocated unique IP address
+    2. Containers on same bridge network can communicate with each other using IP addresses
+    3. Default bridge network has limitations so better to create custom bridge networks.
+docker network create my_bridge
+docker run --network my_bridge --name container1 -d nginx
+docker run --network my_bridge --name container2 -d nginx
+
+Host networks: adds a container to the host's network stack. Best networking performance at the expense of network isolation (NAT)
+docker run --network host -d nginx          If container exposes port 80, it will be available on port 80 of host machine
+
+Overlay networks: used in Docker Swarm mode to enable communication between containers across multiple Docker daemon hosts
+docker network create --driver overlay my_overlay
+When creating network service in swarm mode, attach it to overlay network:
+docker service create --network my_overlay --name my_service nginx
+
+MacVLAN: assigns MAC address to container, making it appear as physical device on network
+docker network create -d macvlan \
+    --subnet=192.168.0.0/24 \
+    --gateway=192.168.0.1 \
+    -o parent=eth0 my_macvlan_net
+
+To run container on network: docker run --network my_macvlan_net -d nginx
+
+Encryption
+docker network create --opt encrypted --driver overlay my_secure_network
+
+Network Plugins: Third party. Examples are Weave Net, Calico, Flannel
+Service discovery: Docker provides built-in service discovery for containers on same network. Containers reach each other using container
+names as hostnames. Swarm mode has built-in load balancing for services.
+
+Troubleshooting
+docker exec to enter container then use ping, curl, wget etc i.e. docker exec -it <container_name_or_id> /bin/bash; ping 8.8.8.8
+docker network inspect [network_name]       -   view network information
+docker port <container>     -   see port mappings for container
+DNS info: i.e. docker exec -it <container_name_or_id> /bin/bash; cat /etc/resolv.conf 
+
+Best practices
+1. Custom bridge networks instead of default bridge network for better isolation and built-in DNS resolution
+2. Use overlay networks for multi-host communication in swarm mode
+3. Use host networking sparingly and only when high performance is needed
+4. Be cautious when exposing ports only exposing what is necessary
+5. Use Docker Compose for managing multi-container applications and their networks
