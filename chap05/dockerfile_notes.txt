@@ -62,3 +62,10 @@ COPY . .
 
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
+
+HEALTHCHECK: tell docker how to test a container to see if it is still working
+HEALTHCHECK --interval=30s --timeout=10s CMD curl -f http://localhost/ || exit 1
+
+Shell and exec forms.
+shell form: RUN apt-get install python3
+exec form: RUN ["apt-get", "install", "python3"]
