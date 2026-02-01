@@ -1,0 +1,7 @@
+Docker network drivers
+1. Bridge: default network driver. Suitable for standalone containers that need to communicate
+2. Host: removes network isolation between container and Docker host 
+3. Overlay: enables communication beween containers across multiple Docker daemon hosts
+4. MacVLAN: Assigns MAC address to container, making it appear as physical device on network
+5. None: disables all networking for container
+6. Network plugins: allows use of third-party drivers
