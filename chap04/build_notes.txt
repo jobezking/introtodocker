@@ -1,0 +1,56 @@
+Dockerfile example:
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y nginx
+COPY ./my-nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+docker build -t my-nginx:v1   # Builds the image
+
+To build from running container, make changes to the running container and create new image from container:
+docker commit <container_id> my-new-image:tag
+i.e.
+docker commit my-nginx my-nginx:v2
+
+Image tagging. Tag existing image:
+docker tag <source_image>:<tag> <target_image>:<tag>
+
+Example:
+docker tag my-nginx:v1 my-dockerhub-username/my-nginx:v1
+
+Pushing images to Docker Hub
+docker login     # log into Docker Hub
+docker push my-dockerhub-username/my-nginx:v1
+
+Image Layers and caching
+1. Each instruction in Dockerfile creates new layer
+2. Layers are cached and reused in subsequent builds
+3. Ordering instructions from least to most frequently changing can speed up builds. Example Dockerfile:
+FROM ubuntu:20.04
+RUN apt-get update && apt-get install -y nginx
+COPY ./static-files /var/www/html
+COPY ./config-files /etc/nginx
+
+Multi-stage Builds: allow you to use multiple FROM statements in your Dockerfile. Useful for creating smaller production images. Example:
+#Build stage
+FROM golang:1.16 AS build
+WORKDIR /app
+COPY . .
+RUN go build -o myapp
+
+#Production stage
+FROM alpine:3.14
+COPY --from=build /app/myapp /usr/local/bin/myapp
+CMD ["myapp"]
+
+docker scan <image_name>:<tag>      #helps identify vulnerabilities in images.
+
+Best practices
+1. Use specific tags instead of latest for reproducibility
+2. Keep images small by using minimal base images and multi-stage builds
+3. User .dockerignore to exclude unnecessary files from the build context
+4. Leverage build cache by ordering Dockerfile instructions effectively
+5. Regularly update base images to get security patches
+6. Scan images for vulns before deployment
+
+docker system prune -a   #to manage disk space regularly clean up unused images. This removes all unused images, not just dangling ones.
