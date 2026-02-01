@@ -6,3 +6,40 @@ A Dockerﬁle typically consists of following components:
 5. Dependency installation
 6. Application code copying
 7. Execution command speciﬁcation
+
+Dockerfile Instructions
+
+FROM: initializes new build stage and sets base image for subsequent instructions. Typically first in Dockerfile. Multiple FROM = multiple stages
+FROM ubuntu:20.4
+
+LABEL: adds metadata to image in key-pair format
+LABEL version = "1.0" maintainer="j@j.com" description="Sample Docker image"
+
+ENV: sets environment variables in image
+ENV APP_HOME=/app NODE_ENV=production
+
+WORKDIR: sets working directory for subsequent RUN, CMD, ENTRYPOINT, COPY, ADD instructions. Creates directory if it does not exist.
+WORKDIR /app
+
+COPY and ADD: copy files from host into image. COPY is simpler. ADD has extra features like TAR extraction and remote URL support
+COPY package.json .
+ADD https://example.com/big.tar.xz /usr/src/things
+
+RUN executes commands in new layer on top of current image and commits results
+RUN apt-get update && apt-get install -y nodejs
+
+CMD provides default instructions for executing container. Can be only one CMD instruction in Dockerfile. Can be overridden at runtime.
+CMD ["node", "app.js"]
+
+ENTRYPOINT configures a container that will run as an executable. Used in combination with CMD where ENTRYPOINT defines executable and CMD supplies default args
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+EXPOSE informs Docker that the container listens on specified network ports at runtime. Doesn't publish port. Documentation between person who builds image and container.
+When containers are on the same Docker network, they can talk to each other using their internal IP addresses and the ports listed in EXPOSE without any extra configuration.
+EXPOSE 80 443
+
+VOLUME creates mount point and marks it as holding externally mounted volumes from native host or other containers. Useful for mutable and/or user-servicable image parts.
+VOLUME /data
+
+ARG defines variable that can pass at build time to the builder with the docker build command, allowing for more flexible image builds.
+ARG VERSION=latest
