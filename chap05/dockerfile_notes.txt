@@ -1,0 +1,8 @@
+A Dockerﬁle typically consists of following components:
+1. Base image declaration
+2. Metadata and label information
+3. Environment setup
+4. File and directory operations
+5. Dependency installation
+6. Application code copying
+7. Execution command speciﬁcation
