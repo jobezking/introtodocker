@@ -1,0 +1,8 @@
+Key Kubernetes Concepts
+1. Pods: The smallest deployable units in Kubernetes, containing one
+or more containers.
+2. Services: An abstract way to expose an application running on a
+set of Pods.
+3. Deployments: Describe the desired state for Pods and
+ReplicaSets.
+4. Namespaces: Virtual clusters within a physical cluster.
