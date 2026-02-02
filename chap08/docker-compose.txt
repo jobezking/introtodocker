@@ -1,0 +1,109 @@
+Key Benefits of Docker Compose
+1. Simplicity: Deﬁne your entire application stack in a single ﬁle.
+2. Reproducibility: Easily share and version control your application conﬁguration.
+3. Scalability: Simple commands to scale services up or down.
+4. Environment Consistency: Ensure development, staging, and production environments are identical.
+5. Workﬂow Improvement: Compose can be used throughout the development cycle for testing, staging, and production.
+
+The docker-compose.yml ﬁle is the core of Docker Compose. Deﬁnes all components and conﬁgurations of application. Example:
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    environment:
+      FLASK_ENV: development
+    redis:
+      image: "redis:alpine"
+    
+Explaining example:
+version: Speciﬁes the Compose ﬁle format version.
+services: Deﬁnes the containers that make up your app.
+web: A service based on an image built from the Dockerﬁle in the
+current directory.
+redis: A service using the public Redis image.
+
+Key Concepts in Docker Compose
+1. Services: Containers that make up your application.
+2. Networks: How your services communicate with each other.
+3. Volumes: Where your services store and access data.
+
+Basic Docker Compose Commands
+docker compose up                   Create and start containers
+docker compose up -d                Run in detached mode
+docker compose down                 Stop and remove containers, networks, images, and volumes
+docker compose down --volumes       Also remove volumes
+docker compose ps                   List containers
+docker compose logs                 View output from containers
+docker compose logs -f web          Follow logs for the web service
+
+Advanced Docker Compose Features
+1. Environment Variables. You can use .env ﬁles or set them directly in the compose ﬁle:
+version: '3.8'
+services:
+  web:
+    image: "webapp:${TAG}"
+    environment:
+      - DEBUG=1
+2. Extending Services. Use extends to share common conﬁgurations:
+version: '3.8'
+services:
+  web:
+    extends:
+      file: common-services.yml
+      service: webapp
+3. Healthchecks: Ensure services are ready before starting dependent services:
+version: '3.8'
+services:
+  web:
+    image: "webapp:latest"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+Docker Compose can scale services with a single command. This command would start 3 instances of the web service.
+docker compose up -d --scale web=3
+
+Networking in Docker Compose
+By default, Compose sets up a single network for your app. Each container for a service joins the default network and is both reachable
+by other containers on that network, and discoverable by them at a hostname identical to the container name. You can also specify custom networks:
+version: '3.8'
+services:
+  web:
+    networks:
+    - frontend
+    - backend
+  db:
+    networks:
+    - backend
+
+  networks:
+    frontend:
+    backend:
+
+Volumes in Docker Compose
+Compose also lets you create named volumes that can be reused across multiple services:
+version: '3.8'
+services:
+  db:
+    image: postgres
+    volumes:
+      - data:/var/lib/postgresql/data
+
+volumes:
+  data:
+
+Best Practices for Docker Compose
+1. Use version control for your docker-compose.yml ﬁle.
+2. Keep development, staging, and production environments as similar as possible.
+3. Use build arguments and environment variables for ﬂexibility.
+4. Leverage healthchecks to ensure service dependencies are met.
+5. Use .env ﬁles for environment-speciﬁc variables.
+6. Optimize your images to keep them small and eﬃcient.
+7. Use docker-compose.override.yml for local development settings.
