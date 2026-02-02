@@ -1,12 +1,10 @@
 Key Kubernetes Concepts
 1. Pods: The smallest deployable units in Kubernetes, containing oneor more containers.
 2. Services: An abstract way to expose an application running on aset of Pods.
-3. Deployments: Describe the desired state for Pods and
-ReplicaSets.
+3. Deployments: Describe the desired state for Pods and ReplicaSets.
 4. Namespaces: Virtual clusters within a physical cluster.
 
 Setting Up a Kubernetes Cluster
 You can set up a local Kubernetes cluster using Minikube:
 minikube start
-For production, consider managed Kubernetes services like Google
-Kubernetes Engine (GKE), Amazon EKS, or Azure AKS.
+For production, consider managed Kubernetes services like Google Kubernetes Engine (GKE), Amazon EKS, or Azure AKS.
